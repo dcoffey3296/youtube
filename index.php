@@ -1,5 +1,5 @@
 <?php
 
-echo "hello world";
+echo print_r($_GET);
 
 ?>
