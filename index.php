@@ -29,7 +29,8 @@ $query = 'SELECT v."videoId", v.date, u.email'
 $query = pg_escape_string($query);
 
 
-echo "this is the root dir\n</br>";
+
+echo "query: $query\n</br>";
 if ($dbconn = pg_connect(DATABASE_INFO))
 {
 	echo "CONNECTED TO POSGRESS\n</br>";
