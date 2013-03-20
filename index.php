@@ -1,5 +1,4 @@
 <?php
 
-echo print_r($_GET);
-
+echo "this is the root dir";
 ?>
