@@ -17,6 +17,16 @@ WHERE u.email = (SELECT u.email WHERE u.hash = 'abcd1234')
 */
 require_once(dirname(__FILE__)) . "/common/constants.php";
 
+// $query = "SELECT v.\"videoId\", v.date, u.email " 
+// 	. "FROM videos as v "
+// 	. "INNER JOIN "
+// 	. "association as a "
+// 	. "on v.\"videoId\" = a.\"videoId\" "
+//   	.	"INNER JOIN "
+// 	. "users as u "
+//   	. "on a.email = u.email "
+//	 . "WHERE u.email = (SELECT u.email WHERE u.hash = '{$_GET["id"]}')";
+// $query = pg_escape_string($query);
 $query = "SELECT v.\"videoId\", v.date, u.email " 
 	. "FROM videos as v "
 	. "INNER JOIN "
@@ -25,9 +35,7 @@ $query = "SELECT v.\"videoId\", v.date, u.email "
   	.	"INNER JOIN "
 	. "users as u "
   	. "on a.email = u.email "
-	. "WHERE u.email = (SELECT u.email WHERE u.hash = '{$_GET["id"]}')";
-// $query = pg_escape_string($query);
-
+	. "WHERE u.email = (SELECT u.email WHERE u.hash = '$1')";
 
 
 echo "query: $query\n</br>";
@@ -36,8 +44,11 @@ if ($dbconn = pg_connect(DATABASE_INFO))
 	echo "CONNECTED TO POSGRESS\n</br>";
 
 	echo "here is a list of all of the entries:\n</br>";
+	$query_name = "get_videos_for_hash";
 
-	$result = pg_query($dbconn, $query);
+	// prepare the PDO statement
+	$result = pg_prepare($dbconn, $query_name, $query);
+	$result = pg_execute($dbconn, $query_name, array($_GET['id']));
 	if ($result === false)
 	{
 		echo "error getting a result\n</br>";
