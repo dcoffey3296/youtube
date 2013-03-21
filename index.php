@@ -35,7 +35,7 @@ $query = "SELECT v.\"videoId\", v.date, u.email "
   	.	"INNER JOIN "
 	. "users as u "
   	. "on a.email = u.email "
-	. "WHERE u.email = (SELECT u.email WHERE u.hash = '$1')";
+	. "WHERE u.email = (SELECT u.email WHERE u.hash = $1)";
 
 
 echo "query: $query\n</br>";
