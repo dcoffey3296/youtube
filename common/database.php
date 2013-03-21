@@ -108,6 +108,13 @@ function email($to, $subject, $body)
     // set to use SMTP
     $mail->IsSMTP();
     $mail->Host = SMTP_SERVER;
+    $mail->SMTPSecure = 'ssl';
+    $mail->Port = 465; 
+    $mail->SMTPDebug = 1;
+    $mail->SMTPAuth = true;
+    $mail->Username = SMTP_USER;  
+	$mail->Password = SMTP_PASS;   
+
      
     // set from
     $mail->SetFrom(FROM_EMAIL);
