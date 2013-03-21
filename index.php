@@ -1,6 +1,6 @@
 <?php
 
-	require_once(dirname(__FILE__)) . "/common/database.php";
+	require_once(dirname(__FILE__)) . "common/database.php";
 
 ?>
 <!DOCTYPE html>
