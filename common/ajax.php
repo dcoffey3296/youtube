@@ -6,7 +6,7 @@
 	} 
 	else if (!isset($_POST['action']))
 	{
-		error_log("I don't know what you want to do.")
+		error_log("I don't know what you want to do.");
 	}
 	switch ($_POST["action"])
 	{
