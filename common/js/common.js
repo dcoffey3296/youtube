@@ -3,7 +3,7 @@ function ajax(action, data)
 {
 	$.ajax({
         type: "POST",
-        url: "ajax.php",
+        url: "common/ajax.php",
         datatype: 'json',
         data:{ action: action, data: data },
         success: function(result){
