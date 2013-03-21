@@ -18,6 +18,7 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
 		<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet"/>
 		<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
+		<link href="../common/css/style.css" rel="stylesheet"/>
 		<script type="text/javascript">
 		function ajax(action)
 		{
@@ -54,15 +55,15 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 
 	</head>
 	<body>
-		<div style="width:500px;margin:auto;">
+		<div class="outer">
 			<div class="row">
 			  <div class="span12">
 				<form>
 				  <fieldset>
 				    <legend>capture50</legend>
-				    <label>Email me my playlist!</label>
-				    <input type="text" placeholder="you@cs50.net…" id="email">
-				    <span class="help-block">Enter an email address and if you're in the system we'll mail you your playlist.</span>
+				    <label>Lookup playlist URL</label>
+				    <input type="text" placeholder="tf@cs50.net…" id="email">
+				    <span class="help-block">Enter an email address to get their playlist</span>
 				    <button type="button" class="btn" onclick="ajax('get_playlist_url');">Submit</button>
 				  </fieldset>
 				</form>

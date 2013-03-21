@@ -14,9 +14,11 @@
 		<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet"/>
 		<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
 		<script src="common/js/common.js"></script>
+		<link href="common/css/style.css" rel="stylesheet"/>
+
 	</head>
 	<body>
-		<div style="width:500px;margin:auto;">
+		<div class="outer">
 			<div class="row">
 			  <div class="span12">
 				<form>
