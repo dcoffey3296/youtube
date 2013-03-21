@@ -16,44 +16,74 @@ function get_connection()
 	}
 }
 
-function get_user_videos($hash, $start_date = null, $end_date = null)
+function get_user_videos($email, $start_date = null, $end_date = null)
 {
 
-	$query = "SELECT v.\"videoId\", v.date, u.email " 
+	// $query = "SELECT v.\"videoId\", v.date, a.email " 
+	$query = "SELECT v.\"videoId\"	" 
 	. "FROM videos as v "
 	. "INNER JOIN "
 	. "association as a "
 	. "on v.\"videoId\" = a.\"videoId\" "
-  	.	"INNER JOIN "
-	. "users as u "
-  	. "on a.email = u.email "
-	. "WHERE u.email = (SELECT u.email WHERE u.hash = $1)";
+	. "WHERE a.email = $1";
+
+// SELECT v."videoId", v.date, a.email
+// FROM videos as v
+// INNER JOIN
+// association as a
+// on v."videoId" = a."videoId"
+// where a.email = 'danielpcoffey@gmail.com'
+
+
 
 	// return a link to a playlist for a given user
 	if ($dbconn = pg_connect(DATABASE_INFO))
 	{
-		echo "CONNECTED TO POSGRESS\n</br>";
-
-		echo "here is a list of all of the entries:\n</br>";
 		$query_name = "get_videos_for_hash";
 
 		// prepare the PDO statement
 		$result = pg_prepare($dbconn, $query_name, $query);
-		$result = pg_execute($dbconn, $query_name, array($_GET['id']));
+		$result = pg_execute($dbconn, $query_name, array($email));
+
+		// check if it worked
 		if ($result === false)
 		{
-			echo "error getting a result\n</br>";
+			error_log("error getting a result");
+			return false;
 		}
 		else
 		{
+			// we got a valid response, parse it
 			$arr = pg_fetch_all($result);
+
+			// check the parsed results
 			if ($arr === false)
 			{
-				echo "could not get array from posgress!\n</br>";
+				error_log("could not get array from postgress!");
+				return false;
+			}
+			else if (count($arr) < 1)
+			{
+				error_log("got no results back from query");
+				return false;
 			}
 			else
 			{
-				print_r($arr);
+				// merge the returned results into a single array and return the 
+				$array = array();
+				foreach ($arr as $id)
+					$array[] = $id['videoId'];
+
+				// make sure we have values
+				if (count($array) > 0)
+				{
+					return $array;
+				}
+				else
+				{
+					error_log("no results back");
+					return false;
+				}
 			}
 		}
 	}
@@ -69,24 +99,38 @@ function remove_email_from_video($email, $video)
 	// remove the user
 }
 
-function insert_user($email)
-{
-	// return hash
-}
 
-function request_hash_reset($hash)
-{
-	// email user a link to reset hash
-}
-
-function reset_hash($hash, $email)
-{
-	// verify the temporary hash, then generate a new hash
-}
-
-function send_hash($email)
+function send_video_list($email)
 {
 	// email the current hash to the user
+	$video_list = get_user_videos($email);
+
+	if ($video_list === false)
+	{
+		error_log("didn't get any videos back");
+		return false;
+	}
+
+	print_r($video_list);
+
+	// store the first video
+	$first_vid = $video_list[0];
+
+	// remove the first video and merge the rest to csv
+	array_splice($video_list, 0, 1);
+
+	print_r($video_list);
+
+	
+	
+	$body = "<html><head><title>YouTube Playlist</title></head>";
+	$body .= "<body>Hi There!<br/>Here is the link to your playlist:<br/>";
+	$body .= "http://youtube.googleapis.com/v/$first_vid";
+	$body .= (count($video_list) > 0)? "?version=3&playlist=" . implode(",", $video_list) . "</br>" : "</br>";
+	$body .= "Hope you enjoy!<br/> xoxo, capture50</body>";
+
+	$result = email($email, "YouTube Playlist for $email", $body);
+	return $result;
 }
 
 function email($to, $subject, $body)
