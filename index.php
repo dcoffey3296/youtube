@@ -17,15 +17,15 @@ WHERE u.email = (SELECT u.email WHERE u.hash = 'abcd1234')
 */
 require_once(dirname(__FILE__)) . "/common/constants.php";
 
-$query = 'SELECT v."videoId", v.date, u.email' 
-	. 'FROM videos as v'
-	. 'INNER JOIN'
-	. 'association as a'
-	. 'on v."videoId" = a."videoId"'
-  	.	'INNER JOIN'
-	. 'users as u'
-  	. 'on a.email = u.email'
-	. 'WHERE u.email = (SELECT u.email WHERE u.hash = \'' . $_GET["id"] . '\')';
+$query = "SELECT v.\"videoId\", v.date, u.email " 
+	. "FROM videos as v "
+	. "INNER JOIN "
+	. "association as a "
+	. "on v.\"videoId\" = a.\"videoId\" "
+  	.	"INNER JOIN "
+	. "users as u "
+  	. "on a.email = u.email "
+	. "WHERE u.email = (SELECT u.email WHERE u.hash = '{$_GET["id"]}')";
 $query = pg_escape_string($query);
 
 
