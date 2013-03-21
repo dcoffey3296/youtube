@@ -121,7 +121,7 @@ function send_video_list($email)
 	$body = "<html><head><title>YouTube Playlist</title></head>";
 	$body .= "<body>Hi There!<br/>Here is the link to your playlist:<br/>";
 	$body .= "http://youtube.googleapis.com/v/$first_vid";
-	$body .= (count($video_list) > 0)? "?version=3&playlist=" . implode(",", $video_list) . "</br>" : "</br>";
+	$body .= (count($video_list) > 0)? "?version=3&playlist=" . implode(",", $video_list) . "<br/>" : "<br/>";
 	$body .= "Hope you enjoy!<br/> xoxo, capture50</body>";
 
 	$result = email($email, "YouTube Playlist for $email", $body);
