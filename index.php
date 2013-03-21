@@ -2,11 +2,6 @@
 
 	require_once(dirname(__FILE__)) . "/common/database.php";
 
-	if (send_video_list($_GET['email']))
-		echo "WORKED, you've been emailed";
-	else
-		echo "FAILED or user not found";
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +16,7 @@
 	</head>
 	<body>
 		<div class="row">
-		  <div class="span12">
+		  <div class="span6">
 			<form>
 			  <fieldset>
 			    <legend>capture50</legend>
