@@ -111,16 +111,11 @@ function send_video_list($email)
 		return false;
 	}
 
-	print_r($video_list);
-
 	// store the first video
 	$first_vid = $video_list[0];
 
 	// remove the first video and merge the rest to csv
 	array_splice($video_list, 0, 1);
-
-	print_r($video_list);
-
 	
 	
 	$body = "<html><head><title>YouTube Playlist</title></head>";
