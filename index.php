@@ -26,7 +26,7 @@ $query = "SELECT v.\"videoId\", v.date, u.email "
 	. "users as u "
   	. "on a.email = u.email "
 	. "WHERE u.email = (SELECT u.email WHERE u.hash = '{$_GET["id"]}')";
-$query = pg_escape_string($query);
+// $query = pg_escape_string($query);
 
 
 
