@@ -23,7 +23,7 @@
 			    <label>Email me my playlist!</label>
 			    <input type="text" placeholder="you@cs50.net…" id="email">
 			    <span class="help-block">Enter an email address and if you're in the system we'll mail you your playlist.</span>
-			    <button type="button" class="btn" onclick="ajax('send_video_list', {'email':'$(#email).val()'});">Submit</button>
+			    <button type="button" class="btn" onclick="ajax('send_video_list');">Submit</button>
 			  </fieldset>
 			</form>
 		  </div>

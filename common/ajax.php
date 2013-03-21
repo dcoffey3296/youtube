@@ -11,13 +11,13 @@
 	switch ($_POST["action"])
 	{
 		case "send_video_list":
-			$arr = json_decode($_POST['data']);
-			print_r($arr);
+			$email = json_decode($_POST['email']);
+			var_dump($email);
 		break;
 
 		default:
 			echo "something else";
 		break;
-	}
+	}	
 
 ?>
