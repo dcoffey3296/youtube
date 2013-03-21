@@ -42,14 +42,19 @@ function get_user_videos($email, $start_date = null, $end_date = null)
 		$query_name = "get_videos_for_hash";
 
 		// prepare the PDO statement
-		$result = pg_prepare($dbconn, $query_name, $query);
-		$result = pg_execute($dbconn, $query_name, array($email));
+		$result = pg_prepare($dbconn, "", $query);
+		$result = pg_execute($dbconn, "", array($email));
 
 		// check if it worked
-		if ($result === false)
+		if (pg_num_rows($result) < 0)
 		{
 			error_log("error getting a result");
 			return false;
+		}
+		else if (pg_num_rows($result) === 0)
+		{
+			// no results
+			return array();
 		}
 		else
 		{
@@ -59,12 +64,7 @@ function get_user_videos($email, $start_date = null, $end_date = null)
 			// check the parsed results
 			if ($arr === false)
 			{
-				error_log("could not get array from postgress!");
-				return false;
-			}
-			else if (count($arr) < 1)
-			{
-				error_log("got no results back from query");
+				error_log("got a postgress error");
 				return false;
 			}
 			else
@@ -81,8 +81,7 @@ function get_user_videos($email, $start_date = null, $end_date = null)
 				}
 				else
 				{
-					error_log("no results back");
-					return false;
+					return array();
 				}
 			}
 		}
@@ -99,29 +98,46 @@ function remove_email_from_video($email, $video)
 	// remove the user
 }
 
-
-function send_video_list($email)
+function get_playlist_url($video_list)
 {
-	// email the current hash to the user
-	$video_list = get_user_videos($email);
-
-	if ($video_list === false)
+	// check for videos
+	if (count($video_list) === 0)
 	{
-		error_log("didn't get any videos back");
+		error_log("no videos in video list");
 		return false;
 	}
 
-	// store the first video
-	$first_vid = $video_list[0];
+	// set the first video
+	$str = "http://youtube.googleapis.com/v/" . $video_list[0];
 
 	// remove the first video and merge the rest to csv
 	array_splice($video_list, 0, 1);
+	$str .= (count($video_list) > 0)? "?version=3&playlist=" . implode(",", $video_list) : "";
+
+	return $str;
+}
+
+function send_video_list($email, $video_list)
+{
+	// email the current hash to the user
 	
+
+	if (count($video_list) === 0)
+	{
+		error_log("no videos in video list");
+		return false;
+	}
+
+	$url = get_playlist_url($video_list);
+	if ($url === false)
+	{
+		error_log("could not get playlist url");
+		return false;
+	}
 	
 	$body = "<html><head><title>YouTube Playlist</title></head>";
-	$body .= "<body>Hi There!<br/>Here is the link to your playlist:<br/>";
-	$body .= "http://youtube.googleapis.com/v/$first_vid";
-	$body .= (count($video_list) > 0)? "?version=3&playlist=" . implode(",", $video_list) . "<br/>" : "<br/>";
+	$body .= "<body>Hi There!<br/>Here is the link to your playlist:<br/><br/>";
+	$body .= $url . "<br/><br/>";
 	$body .= "Hope you enjoy!<br/> xoxo, capture50</body>";
 
 	$result = email($email, "YouTube Playlist for $email", $body);

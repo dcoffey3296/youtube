@@ -13,13 +13,14 @@ function ajax(action)
                     
                     // parse JSON results
                     var parsed = jQuery.parseJSON(result);
+                    console.log(parsed);
                     if (parsed.error !== true) // if no error
                     {
-                        console.log(parsed);
+                        $("#message").text(parsed.message);
                     }
                     else
                     {
-                        console.log(parsed);    
+                        $("#message").text(parsed.message);
                     }
                 }
             });
