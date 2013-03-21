@@ -11,7 +11,7 @@
 	switch ($_POST["action"])
 	{
 		case "send_video_list":
-			$email = json_decode($_POST['email']);
+			$email = $_POST['email'];
 			var_dump($email);
 		break;
 
