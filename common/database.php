@@ -16,7 +16,7 @@ function get_connection()
 	}
 }
 
-function get_user_videos($email, $start_date = null, $end_date = null)
+function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 {
 
 	// $query = "SELECT v.\"videoId\", v.date, a.email " 
@@ -37,13 +37,11 @@ function get_user_videos($email, $start_date = null, $end_date = null)
 
 
 	// return a link to a playlist for a given user
-	if ($dbconn = pg_connect(DATABASE_INFO))
+	if ($handle !== false)
 	{
-		$query_name = "get_videos_for_hash";
-
 		// prepare the PDO statement
-		$result = pg_prepare($dbconn, "", $query);
-		$result = pg_execute($dbconn, "", array($email));
+		$result = pg_prepare($handle, "", $query);
+		$result = pg_execute($handle, "", array($email));
 
 		// check if it worked
 		if (pg_num_rows($result) < 0)
@@ -88,14 +86,144 @@ function get_user_videos($email, $start_date = null, $end_date = null)
 	}
 }
 
-function associate_email_to_video($email, $video)
+function associate_email_to_video($handle, $email, $video)
 {
+	// this can happen for every video
 	// associate a video with an email address
+	// postgress timestamp date('Y-m-d H:i:s', time());
+
+	// INSERT INTO videos ("videoId", date)
+ 	//    VALUES "abcccc", "2013-03-21 17:04:52"
+	// WHERE NOT EXISTS (SELECT 1 FROM videos WHERE "videoId"="abccc")
+
+
+	// $1 = videoId, $2 = email
+	$query = "INSERT INTO association (\"videoId\", \"email\")("
+	    . "SELECT $1, $2 "
+	    . "WHERE NOT EXISTS ("
+	        . "SELECT \"videoId\",\"email\" "
+	        . "FROM association "
+	        . "WHERE \"videoId\" = $1 AND \"email\" = $2"
+	    . ")"
+	. ")";
+
+	// make sure we have a valid db handle
+	if ($handle !== false)
+	{
+		// prepare the PDO statement
+		$result = pg_prepare($handle, "", $query);
+		$result = pg_execute($handle, "", array($video, $email));
+
+		// check if it worked
+		if (pg_num_rows($result) < 0)
+		{
+			error_log("error getting a result");
+			return false;
+		}
+		else
+		{
+			// we had success
+			return true;
+		}
+	}
 }
 
-function remove_email_from_video($email, $video)
+// false on fail, true whether or not it existed before or not
+// date = timestamp
+function insert_video($handle, $video, $date)
 {
-	// remove the user
+	// insert a video if it doesn't exist
+	// postgress timestamp date('Y-m-d H:i:s', time());
+
+	// INSERT INTO videos ("videoId", date)
+ //    VALUES "abcccc", "2013-03-21 17:04:52"
+	// WHERE NOT EXISTS (SELECT 1 FROM videos WHERE "videoId"="abccc")
+
+	// -- first insert:
+	// $1 == videoId
+	// $2 == date
+	$query = "INSERT INTO videos (\"videoId\", \"date\")("
+		. "SELECT $1, $2 "
+		. "WHERE NOT EXISTS ("
+			. "SELECT \"videoId\" " 
+			. "FROM videos "
+			. "WHERE \"videoId\" = $1"
+		. ")"
+	. ")";
+
+
+	// make sure we have a valid db handle
+	if ($handle !== false)
+	{
+		// prepare the PDO statement
+		$result = pg_prepare($handle, "", $query);
+		$result = pg_execute($handle, "", array($video, date('Y-m-d H:i:s', $date)));
+
+		// check if it worked
+		if (pg_num_rows($result) < 0)
+		{
+			error_log("error getting a result");
+			return false;
+		}
+		else
+		{
+			// return number inserted (0 if exists, 1 if newt_bell(oid))
+			return true;
+		}
+	}
+}
+
+
+function remove_email_from_video($handle, $email, $video)
+{
+	// remove the user from a given video
+	$query = "DELETE FROM ONLY association WHERE \"email\" = $1 and \"videoId\" = $2";
+
+	// make sure we have a valid db handle
+	if ($handle !== false)
+	{
+		// prepare the PDO statement
+		$result = pg_prepare($handle, "", $query);
+		$result = pg_execute($handle, "", array($email, $video));
+
+		// check if it worked
+		if (pg_num_rows($result) < 0)
+		{
+			error_log("error getting a result");
+			return false;
+		}
+		else
+		{
+			// return 
+			return true;
+		}
+	}
+}
+
+function remove_video($handle, $video)
+{
+	// remove a video from the database
+	$query = "DELETE FROM ONLY videos WHERE \"videoId\" = $1";
+
+	if ($handle !== false)
+	{
+		// prepare the PDO statement
+		$result = pg_prepare($handle, "", $query);
+		$result = pg_execute($handle, "", array($video));
+
+		// check if it worked
+		if (pg_num_rows($result) < 0)
+		{
+			error_log("error getting a result");
+			return false;
+		}
+		else
+		{
+			// return 
+			return true;
+		}
+	}
+
 }
 
 function get_playlist_url($video_list)
