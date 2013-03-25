@@ -1,5 +1,6 @@
 <?php
 
+	// require database info
 	require_once(dirname(__FILE__)) . "/common/database.php";
 
 ?>
