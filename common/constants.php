@@ -16,4 +16,6 @@ define("SMTP_SERVER", "smtp.gmail.com");
 define("SMTP_USER", "cs50capture@gmail.com");
 define("SMTP_PASS", "capture50");
 define("FROM_EMAIL", "cs50capture@gmail.com");
+
+
 ?>
