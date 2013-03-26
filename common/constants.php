@@ -7,6 +7,10 @@ define("DATABASE_INFO", "host=ec2-107-22-183-27.compute-1.amazonaws.com port=543
 define("ADMIN_USER", "cs50");
 define("ADMIN_PASS", "capture50");
 
+// submit page username/password
+define("SUBMIT_USER", "capture50submit");
+define("SUBMIT_PASSWORD", "capture50password");
+
 // mail server info
 define("SMTP_SERVER", "smtp.gmail.com");
 define("SMTP_USER", "cs50capture@gmail.com");
