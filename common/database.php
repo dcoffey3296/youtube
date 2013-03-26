@@ -1,4 +1,5 @@
 <?php
+
 require_once(dirname(__FILE__)) . "/constants.php";
 require_once(dirname(__FILE__)) . "/PHPMailer/class.phpmailer.php";
 require_once(dirname(__FILE__)) . "/PHPMailer/class.smtp.php";
@@ -263,10 +264,10 @@ function send_video_list($email, $video_list)
 		return false;
 	}
 	
-	$body = "<html><head><title>YouTube Playlist</title></head>";
-	$body .= "<body>Hi There!<br/>Here is the link to your playlist:<br/><br/>";
-	$body .= $url . "<br/><br/>";
-	$body .= "Hope you enjoy!<br/> xoxo, capture50</body>";
+	$body = "<html><head><title>YouTube Playlist</title></head>"
+		. "<body>Hi There!<br/>Here is the link to your playlist:<br/><br/>"
+		. $url . "<br/><br/>"
+		. "Hope you enjoy!<br/> xoxo, capture50</body>";
 
 	$result = email($email, "YouTube Playlist for $email", $body);
 	return $result;
