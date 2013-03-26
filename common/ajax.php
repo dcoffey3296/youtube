@@ -17,8 +17,17 @@
 	{
 
 		case "send_video_list":
+			$handle = get_connection();
+			if ($handle === false)
+			{
+				error_log("unable to get db connection");
+				return false;
+			}
+
 			$email = $_POST['email'];
-			$result = get_user_videos($email);
+			$result = get_user_videos($handle, $email);
+
+			pg_close($handle);
 
 			if ($result === false)
 			{
@@ -51,7 +60,17 @@
 
 		case "get_playlist_url":
 			$email = $_POST['email'];
-			$result = get_user_videos($email);
+
+			$handle = get_connection();
+			if ($handle === false)
+			{
+				error_log("unable to get db connection");
+				return false;
+			}
+
+			$result = get_user_videos($handle, $email);
+			pg_close($handle);
+
 
 			if ($result === false)
 			{
