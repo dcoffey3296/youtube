@@ -87,6 +87,49 @@ function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 	}
 }
 
+function get_all_emails($handle)
+{
+
+	$query = "SELECT DISTINCT \"email\" FROM association";
+
+	// return a link to a playlist for a given user
+	if ($handle !== false)
+	{
+		// prepare the PDO statement
+		$result = pg_prepare($handle, "", $query);
+		$result = pg_execute($handle, "", array());
+		// check if it worked
+		if (pg_num_rows($result) < 0)
+		{
+			error_log("error getting a result");
+			return false;
+		}
+		else
+		{
+			// we got a valid response, parse it
+			$arr = pg_fetch_all($result);
+
+			// check the parsed results
+			if ($arr === false)
+			{
+				error_log("got a postgress error " . pg_last_error($handle));
+				return false;
+			}
+			else
+			{
+				// merge the returned results into a single array and return the 
+				
+				$array = array();
+				foreach ($arr as $result)
+					$array[] = $result['email'];
+
+				// make sure we have values
+				return $array;
+			}
+		}
+	}
+}
+
 function associate_email_to_video($handle, $email, $video)
 {
 	// this can happen for every video

@@ -58,6 +58,37 @@
 			}
 		break;
 
+		case "get_all_emails":
+			$handle = get_connection();
+			if ($handle === false)
+			{
+				error_log("unable to get db connection");
+				return false;
+			}
+
+			$result = get_all_emails($handle);
+			pg_close($handle);
+
+			if ($result === false)
+			{
+				$return['error'] = true;
+				$return['message'] = "Sorry, there was an error.";
+			}
+			else if (count($result) === 0)
+			{
+				$return['error'] = true;
+				$return['message'] = "Sorry, we have no email addresses";
+			}
+			else
+			{
+				
+				$return['error'] = false;
+				$return['message'] = "";
+				$return['data'] = $result;
+				
+			}
+		break;
+
 		case "get_playlist_url":
 			$email = $_POST['email'];
 

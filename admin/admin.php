@@ -20,6 +20,9 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
 		<link href="../common/css/style.css" rel="stylesheet"/>
 		<script type="text/javascript">
+
+		$(document).ready(ajax("get_all_emails"));
+		
 		function ajax(action)
 		{
 		    switch (action)
@@ -46,6 +49,31 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		                }
 		            });
 		        break;
+
+		        case "get_all_emails":
+            $.ajax({
+                type: "POST",
+                url: "../common/ajax.php",
+                datatype: 'json',
+                data:{ action: action, email: $("#email").val() },
+                success: function(result){
+                    
+                    // parse JSON results
+                    var parsed = jQuery.parseJSON(result);
+                    if (parsed.error !== true) // if no error
+                    {
+                        $("#email").autocomplete({source: parsed.data});
+                    	console.log(parsed.data);
+
+                    }
+                    else
+                    {
+                        console.log("error getting response");
+                        console.log(parsed);
+                    }
+                }
+            });
+        break;
 
 		        default:
 		            return false;
