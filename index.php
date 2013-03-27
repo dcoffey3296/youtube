@@ -16,7 +16,6 @@
 		<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
 		<script src="common/js/common.js"></script>
 		<link href="common/css/style.css" rel="stylesheet"/>
-
 	</head>
 	<body>
 		<script type="text/javascript">
@@ -34,9 +33,15 @@
 				    <label>Email me my playlist!</label>
 				    <input type="text" placeholder="you@cs50.net…" id="email">
 				    <span class="help-block">Enter an email address and if you're in the system we'll mail you your playlist.</span>
-				    <div id="datepickers" style="margin-top:25px;">
-				    	<input type="text" id="startdate" placeholder="start date (optional)"/>
-				    	<input type="text" id="enddate" placeholder="end date (optional)"/>
+				    <div id="datepickers">
+					    <div class="input-prepend inline">
+					      <span class="add-on"><i class="icon-calendar"></i></span>
+					      <input class="datepicker" type="text" id="startdate" placeholder="start date (optional)"/>
+					    </div>
+					    <div class="input-prepend inline">
+					      <span class="add-on"><i class="icon-calendar"></i></span>
+					      <input class="datepicker" type="text" id="enddate" placeholder="end date (optional) "/>
+					    </div>
 				    	<input type="text" id="start" style="visibility:hidden"/>
 				    	<input type="text" id="end" style="visibility:hidden"/>
 				    </div>

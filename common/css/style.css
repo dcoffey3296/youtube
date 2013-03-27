@@ -1,4 +1,18 @@
+.datepicker {
+	width:9em;
+	margin-right:5px;
+}
+
+.datepickers {
+	margin-top:25px;
+}
+
+.inline {
+	display:inline;
+}
+
 .outer {
 	width:500px;
 	margin:auto;
+	overflow:hidden;
 }

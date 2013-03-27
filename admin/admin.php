@@ -21,65 +21,69 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		<link href="../common/css/style.css" rel="stylesheet"/>
 		<script type="text/javascript">
 
-		$(document).ready(ajax("get_all_emails"));
+			$(document).ready(function(){
+				ajax("get_all_emails");
+				$("#startdate").datepicker({altFormat: "yy-mm-dd", altField: "#start"});
+				$("#enddate").datepicker({altFormat: "yy-mm-dd", altField: "#end"});
+			});
 
-		function ajax(action)
-		{
-		    switch (action)
-		    {
-		        case "get_playlist_url":
-		            $.ajax({
-		                type: "POST",
-		                url: "../common/ajax.php",
-		                datatype: 'json',
-		                data:{ action: "get_playlist_url", email: $("#email").val() },
-		                success: function(result){
-		                    
-		                    // parse JSON results
-		                    var parsed = jQuery.parseJSON(result);
-		                    console.log(parsed);
-		                    if (parsed.error !== true) // if no error
-		                    {
-		                        $("#message").text(parsed.message);
-		                    }
-		                    else
-		                    {
-		                        $("#message").text(parsed.message);
-		                    }
-		                }
-		            });
-		        break;
+			function ajax(action)
+			{
+			    switch (action)
+			    {
+			        case "get_playlist_url":
+			            $.ajax({
+			                type: "POST",
+			                url: "../common/ajax.php",
+			                datatype: 'json',
+			                data:{ action: "get_playlist_url", email: $("#email").val() },
+			                success: function(result){
+			                    
+			                    // parse JSON results
+			                    var parsed = jQuery.parseJSON(result);
+			                    console.log(parsed);
+			                    if (parsed.error !== true) // if no error
+			                    {
+			                        $("#message").text(parsed.message);
+			                    }
+			                    else
+			                    {
+			                        $("#message").text(parsed.message);
+			                    }
+			                }
+			            });
+			        break;
 
-		        case "get_all_emails":
-		            $.ajax({
-		                type: "POST",
-		                url: "../common/ajax.php",
-		                datatype: 'json',
-		                data:{ action: action, email: $("#email").val() },
-		                success: function(result){
-		                    
-		                    // parse JSON results
-		                    var parsed = jQuery.parseJSON(result);
-		                    if (parsed.error !== true) // if no error
-		                    {
-		                        $("#email").autocomplete({source: parsed.data});
-		                    	console.log(parsed.data);
+			        case "get_all_emails":
+			            $.ajax({
+			                type: "POST",
+			                url: "../common/ajax.php",
+			                datatype: 'json',
+			                data:{ action: action, email: $("#email").val() },
+			                success: function(result){
+			                    
+			                    // parse JSON results
+			                    var parsed = jQuery.parseJSON(result);
+			                    if (parsed.error !== true) // if no error
+			                    {
+			                        $("#email").autocomplete({source: parsed.data});
+			                    	console.log(parsed.data);
 
-		                    }
-		                    else
-		                    {
-		                        console.log("error getting response");
-		                        console.log(parsed);
-		                    }
-		                }
-		            });
-        		break;
+			                    }
+			                    else
+			                    {
+			                        console.log("error getting response");
+			                        console.log(parsed);
+			                    }
+			                }
+			            });
+	        		break;
 
-		        default:
-		            return false;
-		    }
-		}
-		</script>
+			        default:
+			            return false;
+			    }
+			}
+			</script>
 
 	</head>
 	<body>
@@ -92,6 +96,18 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 				    <label>Lookup playlist URL</label>
 				    <input type="text" placeholder="tf@cs50.net…" id="email" onblur="$('#button').focus();">
 				    <span id="button" class="help-block">Enter an email address to get their playlist</span>
+				    <div id="datepickers" style="margin-top:25px;">
+					    <div class="input-prepend inline">
+					      <span class="add-on"><i class="icon-calendar"></i></span>
+					      <input class="datepicker" type="text" id="startdate" placeholder="start date (optional)"/>
+					    </div>
+					    <div class="input-prepend inline">
+					      <span class="add-on"><i class="icon-calendar"></i></span>
+					      <input class="datepicker" type="text" id="enddate" placeholder="end date (optional) "/>
+					    </div>
+				    	<input type="text" id="start" style="visibility:hidden"/>
+				    	<input type="text" id="end" style="visibility:hidden"/>
+				    </div>
 				    <button type="button" class="btn" onclick="ajax('get_playlist_url');">Submit</button>
 				  </fieldset>
 				</form>
