@@ -22,7 +22,7 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		<script type="text/javascript">
 
 		$(document).ready(ajax("get_all_emails"));
-		
+
 		function ajax(action)
 		{
 		    switch (action)
@@ -90,8 +90,8 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 				  <fieldset>
 				    <legend>capture50</legend>
 				    <label>Lookup playlist URL</label>
-				    <input type="text" placeholder="tf@cs50.net…" id="email">
-				    <span class="help-block">Enter an email address to get their playlist</span>
+				    <input type="text" placeholder="tf@cs50.net…" id="email" onblur="$('#button').focus();">
+				    <span id="button" class="help-block">Enter an email address to get their playlist</span>
 				    <button type="button" class="btn" onclick="ajax('get_playlist_url');">Submit</button>
 				  </fieldset>
 				</form>
