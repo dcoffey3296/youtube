@@ -17,6 +17,7 @@
 	{
 
 		case "send_video_list":
+		
 			$handle = get_connection();
 			if ($handle === false)
 			{
@@ -25,7 +26,19 @@
 			}
 
 			$email = $_POST['email'];
-			$result = get_user_videos($handle, $email);
+
+			// set the start date appropriately or to null
+			if ($_POST['startDate'] != "")
+				$start = $_POST['startDate'];
+			else
+				$start = null;
+
+			if ($_POST['endDate'] != "")
+				$end = $_POST['endDate'];
+			else
+				$end = null;
+
+			$result = get_user_videos($handle, $email, $start, $end);
 
 			pg_close($handle);
 
@@ -91,6 +104,17 @@
 
 		case "get_playlist_url":
 			$email = $_POST['email'];
+			
+			// set the start date appropriately or to null
+			if ($_POST['startDate'] != "")
+				$start = $_POST['startDate'];
+			else
+				$start = null;
+
+			if ($_POST['endDate'] != "")
+				$end = $_POST['endDate'];
+			else
+				$end = null;
 
 			$handle = get_connection();
 			if ($handle === false)
@@ -99,7 +123,7 @@
 				return false;
 			}
 
-			$result = get_user_videos($handle, $email);
+			$result = get_user_videos($handle, $email, $start, $end);
 			pg_close($handle);
 
 

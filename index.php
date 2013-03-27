@@ -19,6 +19,12 @@
 
 	</head>
 	<body>
+		<script type="text/javascript">
+			$(document).ready(function(){ 
+				$("#startdate").datepicker({altFormat: "yy-mm-dd", altField: "#start"});
+				$("#enddate").datepicker({altFormat: "yy-mm-dd", altField: "#end"});
+			});
+		</script>
 		<div class="outer">
 			<div class="row">
 			  <div class="span12">
@@ -28,6 +34,12 @@
 				    <label>Email me my playlist!</label>
 				    <input type="text" placeholder="you@cs50.net…" id="email">
 				    <span class="help-block">Enter an email address and if you're in the system we'll mail you your playlist.</span>
+				    <div id="datepickers" style="margin-top:25px;">
+				    	<input type="text" id="startdate" placeholder="start date (optional)"/>
+				    	<input type="text" id="enddate" placeholder="end date (optional)"/>
+				    	<input type="text" id="start" style="visibility:hidden"/>
+				    	<input type="text" id="end" style="visibility:hidden"/>
+				    </div>
 				    <button type="button" class="btn" onclick="ajax('send_video_list');">Submit</button>
 				  </fieldset>
 				</form>

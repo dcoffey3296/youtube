@@ -19,6 +19,26 @@ function get_connection()
 
 function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 {
+	$arg_index = 2;
+	$dates_array = array();
+
+	// first arguement is email
+	$pdo_array[] = $email;
+
+	// remember the start date if specified
+	if (isset($start_date))
+	{
+		$arg_array[] = "v.\"date\" >= $" . $arg_index;
+		$pdo_array[] = $start_date;
+		$arg_index++;
+	}
+	// remember the end date if specified
+	if (isset($end_date))
+	{
+		$arg_array[] = "v.\"date\" <= $" . $arg_index;
+		$pdo_array[] = $end_date;
+		$arg_index++;
+	}
 
 	// $query = "SELECT v.\"videoId\", v.date, a.email " 
 	$query = "SELECT v.\"videoId\"	" 
@@ -27,6 +47,13 @@ function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 	. "association as a "
 	. "on v.\"videoId\" = a.\"videoId\" "
 	. "WHERE a.email = $1";
+
+	foreach ($arg_array as $arg)
+	{
+		$query .= " AND " . $arg;
+	}
+
+	error_log("QUERY: $query");
 
 // SELECT v."videoId", v.date, a.email
 // FROM videos as v
@@ -41,8 +68,11 @@ function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 	if ($handle !== false)
 	{
 		// prepare the PDO statement
+		
+
+
 		$result = pg_prepare($handle, "", $query);
-		$result = pg_execute($handle, "", array($email));
+		$result = pg_execute($handle, "", $pdo_array);
 
 		// check if it worked
 		if (pg_num_rows($result) < 0)

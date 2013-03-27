@@ -51,29 +51,29 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		        break;
 
 		        case "get_all_emails":
-            $.ajax({
-                type: "POST",
-                url: "../common/ajax.php",
-                datatype: 'json',
-                data:{ action: action, email: $("#email").val() },
-                success: function(result){
-                    
-                    // parse JSON results
-                    var parsed = jQuery.parseJSON(result);
-                    if (parsed.error !== true) // if no error
-                    {
-                        $("#email").autocomplete({source: parsed.data});
-                    	console.log(parsed.data);
+		            $.ajax({
+		                type: "POST",
+		                url: "../common/ajax.php",
+		                datatype: 'json',
+		                data:{ action: action, email: $("#email").val() },
+		                success: function(result){
+		                    
+		                    // parse JSON results
+		                    var parsed = jQuery.parseJSON(result);
+		                    if (parsed.error !== true) // if no error
+		                    {
+		                        $("#email").autocomplete({source: parsed.data});
+		                    	console.log(parsed.data);
 
-                    }
-                    else
-                    {
-                        console.log("error getting response");
-                        console.log(parsed);
-                    }
-                }
-            });
-        break;
+		                    }
+		                    else
+		                    {
+		                        console.log("error getting response");
+		                        console.log(parsed);
+		                    }
+		                }
+		            });
+        		break;
 
 		        default:
 		            return false;

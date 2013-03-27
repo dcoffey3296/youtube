@@ -8,7 +8,7 @@ function ajax(action)
                 type: "POST",
                 url: "common/ajax.php",
                 datatype: 'json',
-                data:{ action: action, email: $("#email").val() },
+                data:{ action: action, email: $("#email").val(), startDate: $("#start").val(), endDate: $("#end").val() },
                 success: function(result){
                     
                     // parse JSON results
