@@ -46,7 +46,7 @@ function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 	. "INNER JOIN "
 	. "association as a "
 	. "on v.\"videoId\" = a.\"videoId\" "
-	. "WHERE a.email = $1";
+	. "WHERE a.email = $1 ORDER BY v.\"date\" DESC";
 
 	foreach ($arg_array as $arg)
 	{
