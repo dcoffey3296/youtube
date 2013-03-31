@@ -1,3 +1,8 @@
+#container {
+	width: 95%;
+	margin:auto;
+}
+
 .datepicker {
 	width:9em;
 	margin-right:5px;
@@ -7,12 +12,34 @@
 	margin-top:25px;
 }
 
+/*td.include {
+	text-align:center;
+	margin:auto;
+}*/
+
+td.video_table * {
+	margin-top:50%;
+	margin-bottom:50%;
+}
+
 .inline {
 	display:inline;
 }
 
+.message {
+	width:100%;
+}
+
 .outer {
-	width:500px;
+	width:65%;
 	margin:auto;
 	overflow:hidden;
+}
+
+.url {
+	white-space:pre-line;
+}
+
+.video-table, #url {
+	/*width:80%;*/
 }

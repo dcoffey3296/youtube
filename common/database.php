@@ -53,24 +53,10 @@ function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 		$query .= " AND " . $arg;
 	}
 
-	error_log("QUERY: $query");
-
-// SELECT v."videoId", v.date, a.email
-// FROM videos as v
-// INNER JOIN
-// association as a
-// on v."videoId" = a."videoId"
-// where a.email = 'danielpcoffey@gmail.com'
-
-
-
 	// return a link to a playlist for a given user
 	if ($handle !== false)
 	{
 		// prepare the PDO statement
-		
-
-
 		$result = pg_prepare($handle, "", $query);
 		$result = pg_execute($handle, "", $pdo_array);
 

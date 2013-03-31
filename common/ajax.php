@@ -98,7 +98,44 @@
 				$return['error'] = false;
 				$return['message'] = "";
 				$return['data'] = $result;
+			}
+		break;
+
+		case "get_all_videos":
+			$handle = get_connection();
+			if ($handle === false)
+			{
+				error_log("unable to get db connection");
+				return false;
+			}
+
+			$email = $_POST['email'];
+
+			// set the start date appropriately or to null
+			if ($_POST['startDate'] != "")
+				$start = $_POST['startDate'];
+			else
+				$start = null;
+
+			if ($_POST['endDate'] != "")
+				$end = $_POST['endDate'];
+			else
+				$end = null;
+
+			$result = get_user_videos($handle, $email, $start, $end);
+			pg_close($handle);
+
+			if ($result === false)
+			{
+				$return['error'] = true;
+				$return['message'] = "Sorry, there was an error.";
+			}
+			else
+			{
 				
+				$return['error'] = false;
+				$return['message'] = "";
+				$return['data'] = $result;
 			}
 		break;
 

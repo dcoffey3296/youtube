@@ -19,71 +19,9 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet"/>
 		<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
 		<link href="../common/css/style.css" rel="stylesheet"/>
-		<script type="text/javascript">
-
-			$(document).ready(function(){
-				ajax("get_all_emails");
-				$("#startdate").datepicker({altFormat: "yy-mm-dd", altField: "#start"});
-				$("#enddate").datepicker({altFormat: "yy-mm-dd", altField: "#end"});
-			});
-
-			function ajax(action)
-			{
-			    switch (action)
-			    {
-			        case "get_playlist_url":
-			            $.ajax({
-			                type: "POST",
-			                url: "../common/ajax.php",
-			                datatype: 'json',
-			                data:{ action: "get_playlist_url", email: $("#email").val() },
-			                success: function(result){
-			                    
-			                    // parse JSON results
-			                    var parsed = jQuery.parseJSON(result);
-			                    console.log(parsed);
-			                    if (parsed.error !== true) // if no error
-			                    {
-			                        $("#message").text(parsed.message);
-			                    }
-			                    else
-			                    {
-			                        $("#message").text(parsed.message);
-			                    }
-			                }
-			            });
-			        break;
-
-			        case "get_all_emails":
-			            $.ajax({
-			                type: "POST",
-			                url: "../common/ajax.php",
-			                datatype: 'json',
-			                data:{ action: action, email: $("#email").val() },
-			                success: function(result){
-			                    
-			                    // parse JSON results
-			                    var parsed = jQuery.parseJSON(result);
-			                    if (parsed.error !== true) // if no error
-			                    {
-			                        $("#email").autocomplete({source: parsed.data});
-			                    	console.log(parsed.data);
-
-			                    }
-			                    else
-			                    {
-			                        console.log("error getting response");
-			                        console.log(parsed);
-			                    }
-			                }
-			            });
-	        		break;
-
-			        default:
-			            return false;
-			    }
-			}
-			</script>
+		<?php
+			require_once "adminjs.php";
+		?>
 
 	</head>
 	<body>
@@ -108,14 +46,15 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 				    	<input type="text" id="start" style="visibility:hidden"/>
 				    	<input type="text" id="end" style="visibility:hidden"/>
 				    </div>
-				    <button type="button" class="btn" onclick="ajax('get_playlist_url');">Submit</button>
+				    <button type="button" class="btn" onclick="ajax('get_all_videos');">Submit</button>
 				  </fieldset>
 				</form>
 			  </div>
 			</div>
-			<div class="row">
-				<div class="span12">
-					<div id="message"></div>
+			<div id="container">
+				<div id="message">
+				</div>
+				<div id="table">
 				</div>
 			</div>
 		</div>
