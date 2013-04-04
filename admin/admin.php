@@ -1,10 +1,17 @@
 <?php
 
-require_once(dirname(__FILE__)) . "/../common/constants.php";
+require_once(dirname(__FILE__)) . "/config.php";
 
-// require admin to be logged in
-if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
-	exit(0);
+// if (empty($_SESSION['user']) || $_SESSION['user'] != ADMIN_USER)
+// {
+// 	echo "empty session or user";
+// 	echo "session={$_SESSION['user']}";
+// 	exit;
+// }
+
+// // require admin to be logged in
+// if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
+// 	exit;
 
 ?>
 
@@ -19,7 +26,9 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 		<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet"/>
 		<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
 		<link href="../common/css/style.css" rel="stylesheet"/>
+		
 		<?php
+			// keep JS hidden
 			require_once "adminjs.php";
 		?>
 
@@ -57,6 +66,7 @@ if ($_POST['user'] !== ADMIN_USER || $_POST['pass'] !== ADMIN_PASS)
 				<div id="table">
 				</div>
 			</div>
+			<div><a href="logout.php">logout</a></div>
 		</div>
 	</body>
 </html>

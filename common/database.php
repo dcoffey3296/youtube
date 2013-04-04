@@ -46,12 +46,14 @@ function get_user_videos($handle, $email, $start_date = null, $end_date = null)
 	. "INNER JOIN "
 	. "association as a "
 	. "on v.\"videoId\" = a.\"videoId\" "
-	. "WHERE a.email = $1 ORDER BY v.\"date\" DESC";
+	. "WHERE a.email = $1";
 
 	foreach ($arg_array as $arg)
 	{
 		$query .= " AND " . $arg;
 	}
+
+	$query .= " ORDER BY v.date DESC";
 
 	// return a link to a playlist for a given user
 	if ($handle !== false)

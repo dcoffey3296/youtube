@@ -13,7 +13,7 @@
             case "get_playlist_url":
                 $.ajax({
                     type: "POST",
-                    url: "../common/ajax.php",
+                    url: "../common/adminajax.php",
                     datatype: 'json',
                     data:{ action: action, email: $("#email").val(), startDate: $("#start").val(), endDate: $("#end").val() },
                     success: function(result){
@@ -21,7 +21,7 @@
                         // parse JSON results
                         var parsed = jQuery.parseJSON(result);
                         console.log(parsed);
-                        if (parsed.error !== true) // if no error
+                        if (parsed.error !== true)
                         {
                             $("#message").text(parsed.message);
                         }
@@ -36,7 +36,7 @@
             case "get_all_emails":
                 $.ajax({
                     type: "POST",
-                    url: "../common/ajax.php",
+                    url: "../common/adminajax.php",
                     datatype: 'json',
                     data:{ action: action, email: $("#email").val() },
                     success: function(result){
@@ -62,7 +62,7 @@
             case "get_all_videos":
                 $.ajax({
                     type: "POST",
-                    url: "../common/ajax.php",
+                    url: "../common/adminajax.php",
                     datatype: 'json',
                     data:{ action: action, email: $("#email").val(), startDate: $("#start").val(), endDate: $("#end").val() },
                     success: function(result){
@@ -117,7 +117,7 @@
     function toggle_included(video_tr)
     {
         // get the current row's video id
-        var id = $(video_tr).attr("class")
+        var id = $(video_tr).attr("class");
         if ($(video_tr).children("td[class='include']").children('span.label').length > 0)
         {
             // the item is included
@@ -126,7 +126,7 @@
         }
         else
         {
-            // the video is not included
+            // the video is not included, re-add the included label
             $(video_tr).children("td[class='include']").html("<span class='label info-label'>Included</span>");
             toggle_video(id);
         }
@@ -134,9 +134,6 @@
         $("#url").fadeOut(function(){
             $(this).html(build_url(window.video_list)).fadeIn();
         });
-
-
-        // console.log($("tr[class=" + video_id + "]"));
     }
 
     function toggle_video(id)
@@ -155,7 +152,12 @@
 
     function build_url(video_list)
     {
-        console.log(video_list);
+        // make sure we got some videos in our list
+        if (video_list.length < 1)
+        {
+            return "No videos match your criteria.";
+        }
+
         url = "http://youtube.googleapis.com/v/" + video_list[0];
 
         // remove the first video and merge the rest to csv
